@@ -1,4 +1,4 @@
-package utils
+package matrix
 
 import (
     u "github.com/alexaandru/utils"
