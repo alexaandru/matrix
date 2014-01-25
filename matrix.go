@@ -1,7 +1,7 @@
 package matrix
 
 import (
-    u "github.com/alexaandru/utils"
+    "github.com/alexaandru/utils"
     "strconv"
     "strings"
 )
@@ -37,52 +37,20 @@ func (v Vector) String() (str string) {
     return strings.Trim(str, " ")
 }
 
-// FIXME: Should use the corresponding funcs from util, BUT ONLY AFTER WE ADD TESTS HERE FIRST
-func (v Vector) Max() (m int) {
-    m = v[0]
-    for _, v := range v[1:] {
-        if v >= m {
-            m = v
-        }
-    }
-
-    return
+func (v Vector) Max() int {
+    return utils.MaxInt(v...)
 }
 
-// FIXME: Should use the corresponding funcs from util, BUT ONLY AFTER WE ADD TESTS HERE FIRST
-func (v Vector) MaxIndex() (i int) {
-    m := v[0]
-    for k, v := range v[1:] {
-        if v >= m {
-            m, i = v, k+1
-        }
-    }
-
-    return
+func (v Vector) MaxIndex() int {
+    return utils.MaxIntIndex(v...)
 }
 
-// FIXME: Should use the corresponding funcs from util, BUT ONLY AFTER WE ADD TESTS HERE FIRST
-func (v Vector) Min() (m int) {
-    m = v[0]
-    for _, v := range v[1:] {
-        if v <= m {
-            m = v
-        }
-    }
-
-    return
+func (v Vector) Min() int {
+    return utils.MinInt(v...)
 }
 
-// FIXME: Should use the corresponding funcs from util, BUT ONLY AFTER WE ADD TESTS HERE FIRST
-func (v Vector) MinIndex() (i int) {
-    m := v[0]
-    for k, v := range v[1:] {
-        if v <= m {
-            m, i = v, k+1
-        }
-    }
-
-    return
+func (v Vector) MinIndex() int {
+    return utils.MinIntIndex(v...)
 }
 
 func (m Matrix) String() (str string) {
@@ -99,7 +67,7 @@ func NewVector(n int, inits ...CellInitFunc) (out Vector) {
     if len(inits) > 0 {
         cellFn = inits[0]
     } else {
-        cellFn = u.ConstIntFunc(0)
+        cellFn = utils.ConstIntFunc(0)
     }
 
     out = make(Vector, n)
@@ -116,9 +84,9 @@ func NewMatrix(m, n int, inits ...CellInitFunc) (out Matrix) {
     if len(inits) == 2 {
         rowFn, colFn = inits[0], inits[1]
     } else if len(inits) == 1 {
-        rowFn, colFn = inits[0], u.IdentIntFunc
+        rowFn, colFn = inits[0], utils.IdentIntFunc
     } else {
-        rowFn, colFn = u.IdentIntFunc, u.IdentIntFunc
+        rowFn, colFn = utils.IdentIntFunc, utils.IdentIntFunc
     }
 
     row := make(Vector, n)
@@ -140,8 +108,8 @@ func NewMatrix(m, n int, inits ...CellInitFunc) (out Matrix) {
 
 func NewMatrix3d(m, n, p int, inits ...CellInitFunc) (out Matrix3d) {
     out = make(Matrix3d, p)
-    out[0] = NewMatrix(m, n, u.MultIntFunc(-1), u.MultIntFunc(-1))
-    zero := u.ConstIntFunc(0)
+    out[0] = NewMatrix(m, n, utils.MultIntFunc(-1), utils.MultIntFunc(-1))
+    zero := utils.ConstIntFunc(0)
     for i := 1; i < p; i++ {
         out[i] = NewMatrix(m, n, zero, zero)
         out[i][0][0] = -i
