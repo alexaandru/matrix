@@ -1,4 +1,4 @@
-matrix
+Matrix
 ======
 
-Go matrix (and 3d matrix) implementation
+Go matrix (and 3d matrix) implementation.
